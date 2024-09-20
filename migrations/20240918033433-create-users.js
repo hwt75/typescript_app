@@ -26,8 +26,8 @@ module.exports = {
           type: Sequelize.INTEGER,
         },
         birth: {
-          type: Sequelize.BIGINT,
-          allowNull: false,
+          type: Sequelize.DATE,
+          allowNull: true,
         },
         phone_number: Sequelize.STRING,
         image: Sequelize.STRING,
@@ -40,8 +40,8 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
         },
-        created_at: Sequelize.BIGINT,
-        updated_at: Sequelize.BIGINT,
+        createdAt: Sequelize.DATE,
+        updatedAt: Sequelize.DATE,
       }
     );
   },

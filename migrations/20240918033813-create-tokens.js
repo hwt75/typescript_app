@@ -29,10 +29,10 @@ module.exports = {
         type: Sequelize.BIGINT,
         allowNull: false,
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.BIGINT,
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.BIGINT,
       },
     });

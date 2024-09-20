@@ -1,12 +1,15 @@
-import express, { Request, Response } from 'express';
+import { NestFactory  } from "@nestjs/core";
+import { AppModule } from "./app.module";
 
-const app = express();
-const port = 3000;
+const port = process.env.APP_PORT || 3000;
+const host = process.env.APP_HOST || 'localhost'
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+async function bootstrap(){
+  const app = await NestFactory.create(AppModule);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+  await app.listen(port, () => {
+    console.log(`Application is running on: http://${host}:${port}`);
+  });
+}
+
+bootstrap();

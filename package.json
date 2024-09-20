@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
     "build": "tsc",
     "db:migrate": "npx sequelize-cli db:migrate --name",
     "db:migrate.all": "npx sequelize-cli db:migrate",
@@ -32,11 +32,20 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@nestjs/core": "^10.4.3",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/platform-express": "^10.4.3",
+    "@nestjs/sequelize": "^10.0.1",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mysql2": "^3.11.3",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
-    "typescript-web": "file:"
+    "sequelize-typescript": "^2.1.6",
+    "typescript-web": "file:",
+    "uuid": "^10.0.0"
   }
 }
