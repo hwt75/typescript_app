@@ -32,4 +32,8 @@ export class UserRepository {
             return false;
         }
     }
+
+    async findByAccountId(account_id: string): Promise<UserModel>{
+        return await this.userModel.findOne({ where: { account_id: account_id } });
+    }
 }

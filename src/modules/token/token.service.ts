@@ -1,17 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { AccountModel } from '../account/model/account.model';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import * as dotenv from 'dotenv';
+import { TokenRepository } from './model/token.repository';
+import { TokenModel } from './model/token.model';
+
+dotenv.config();
 
 @Injectable()
 export class TokenService {
     constructor(
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private userService: UserService,
+        private tokenRepository: TokenRepository
     ){}
 
-    async renderToken(account: AccountModel, expiredTime: number) {
+    async renderToken(account: AccountModel, expiredTime: number): Promise<any> {
         try{
-            this.jwtService.sign({
+            const user = await this.userService.findByEmail(account.email);
+            return this.jwtService.sign({
                 account_id: account.id,
+                role: user.role
             },{
                 secret: process.env.JWT_SECRET,
                 expiresIn: expiredTime
@@ -19,7 +29,7 @@ export class TokenService {
         }
         catch(error){
             console.log("token.service.renderToken failed ", error)
-            return false;
+            return null;
         }
     }
 
@@ -31,6 +41,16 @@ export class TokenService {
             return decoded;
         } catch (error) {
             console.log("token.service.verifyTokn failed ", error)
+            return false;
+        }
+    }
+
+    async addToDb(token: TokenModel){
+        try {
+            await this.tokenRepository.addToDB(token);
+        }
+        catch (error) {
+            console.log("token.service.addToDb failed ", error);
             return false;
         }
     }

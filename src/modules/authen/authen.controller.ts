@@ -14,4 +14,9 @@ export class AuthenController{
     async register(@Body() data: any){
         return await this.authenService.register(data);
     }
+
+    @Post('login')
+    async login(@Body() account: AccountModel){
+        return await this.authenService.login(account);
+    }
 }

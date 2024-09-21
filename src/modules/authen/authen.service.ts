@@ -5,6 +5,7 @@ import { AccountService } from '../account/account.service';
 import { UserModel } from '../user/model/user.model';
 import { TokenModel } from '../token/model/token.model';
 import { UserService } from '../user/user.service';
+import { TokenService } from '../token/token.service';
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
@@ -12,7 +13,8 @@ const bcrypt = require('bcrypt');
 export class AuthenService {
     constructor(
         private accountService: AccountService,
-        private userService: UserService
+        private userService: UserService,
+        private tokenService: TokenService
     ){}
 
     async register(data: any): Promise<{metaData: any}>{
@@ -53,9 +55,24 @@ export class AuthenService {
         }
     }
 
-    async login(account: AccountModel): Promise<{data: TokenModel} >{
+    async login(account: AccountModel): Promise<{token: TokenModel} >{
         try {
-            // const loginData = await 
+            const profile = await this.accountService.findByEmail(account.email);
+            const accessToken = await this.tokenService.renderToken(account, 10);
+            const refreshToken = await this.tokenService.renderToken(account, 20);
+
+            const token = TokenModel.build({
+                id: uuidv4(),
+                account_id: profile.id,
+                access_token: accessToken,
+                refresh_token: refreshToken,
+                expires_at: Date.now()
+            })
+            await this.tokenService.addToDb(token);
+            
+            return {
+                token: token
+            };
         }
         catch(error){
             console.log("authen.service.login error ", error);
